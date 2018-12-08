@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  web:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+      - redis
+    env_file:
+      - env_vars
+    links:
+      - mongo
+      - redis
+
+
+  mongo:
+    image: mongo:3.2.11
+    volumes:
+    - /data/db/mongo
+    ports:
+    - "27017:27017"
+
+  redis:
+    image: redis
+    volumes:
+    - /data/db/redis
+    ports:
+    - "6379:6379"
