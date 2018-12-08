@@ -30,7 +30,7 @@ public class Application {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.application.swplanetsapi")) // Teste com swagger ui
+				.apis(RequestHandlerSelectors.basePackage("com.application.swplanetsapi"))
 				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())
 				.build();
