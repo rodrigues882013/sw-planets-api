@@ -1,10 +1,13 @@
 package com.application.swplanetsapi;
 
 import feign.Logger;
+import org.dozer.DozerBeanMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,6 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @SpringBootApplication
 @EnableFeignClients
+@EnableMongoRepositories
+@EnableCaching
 public class Application {
 
 	public static void main(String[] args) {
@@ -34,5 +39,10 @@ public class Application {
     @Bean
     public Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
+    }
+
+    @Bean
+    public DozerBeanMapper dozerBeanMapper() {
+	    return new DozerBeanMapper();
     }
 }

@@ -1,10 +1,14 @@
 package com.application.swplanetsapi.domain.service.impl;
 
+import com.application.swplanetsapi.application.dto.external.PlanetSWResponse;
 import com.application.swplanetsapi.domain.model.Planet;
 import com.application.swplanetsapi.domain.repository.PlanetRepository;
 import com.application.swplanetsapi.domain.service.PlanetService;
 import com.application.swplanetsapi.infrastructure.api.SWApi;
+import com.application.swplanetsapi.infrastructure.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,31 +25,51 @@ public class PlanetServiceImpl implements PlanetService {
     @Override
     public Planet create(Planet planet) {
 
-        return null;
+        try {
+            return repository.save(planet);
+
+        } catch (Exception ex) {
+            throw new ServiceException("Resource wasn't created", HttpStatus.NO_CONTENT);
+        }
     }
 
     @Override
-    public Planet update(Long id, Planet planet) {
-        return null;
-    }
+    public boolean delete(String id) {
+        try {
+            repository.deleteById(id);
+            return true;
 
-    @Override
-    public boolean delete(Long id) {
-        return false;
+        } catch (Exception ex) {
+            throw new ServiceException("Resource wasn't deleted", HttpStatus.NO_CONTENT);
+        }
     }
 
     @Override
     public List<Planet> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
-    public Planet findById(Long id) {
-        return null;
+    public Planet findById(String id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ServiceException("Resource not found", HttpStatus.NOT_FOUND));
     }
 
+
     @Override
-    public Integer countAppeirs(String planeName) {
-        return null;
+    @Cacheable(cacheNames = "planet-name",
+            key = "#planetName",
+            condition = "#planetName != null and #planetName != ''")
+    public Integer getNumberMoviesWherePlanetShowedUp(String planetName){
+        return countAppears(client.findAll(planetName).getResults());
+    }
+
+
+    private Integer countAppears(List<PlanetSWResponse> objects) {
+        return objects
+                .stream()
+                .map(x -> x.getFilms().size())
+                .reduce((x, y) -> x + y)
+                .orElse(0);
     }
 }

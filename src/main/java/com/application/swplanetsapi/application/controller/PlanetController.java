@@ -2,7 +2,7 @@ package com.application.swplanetsapi.application.controller;
 
 import com.application.swplanetsapi.application.dto.internal.PlanetRequest;
 import com.application.swplanetsapi.application.dto.internal.PlanetResponse;
-import com.application.swplanetsapi.infrastructure.api.SWApi;
+import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,32 +16,31 @@ public class PlanetController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public SWApi client;
+    public PlanetFacade facade;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlanetResponse> findById(@PathVariable("id") String id){
-        return null;
+    public ResponseEntity<?> findById(@PathVariable("id") String id){
+        return new ResponseEntity<>(facade.findById(id), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> findAll(){
-        //client.findAll();
-        return new ResponseEntity<>(client.findAll(null), HttpStatus.OK);
+        return new ResponseEntity<>(facade.findAll(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<PlanetResponse> create(@RequestBody PlanetRequest planetRequest){
-        return null;
+        return new ResponseEntity<>(facade.create(planetRequest), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<PlanetResponse> update(@PathVariable("id") Integer id,
+    public ResponseEntity<PlanetResponse> update(@PathVariable("id") String id,
                                                  @RequestBody PlanetRequest planetRequest){
         return null;
     }
 
     @DeleteMapping
-    public ResponseEntity<?> delete(@PathVariable("id") Integer id){
+    public ResponseEntity<?> delete(@PathVariable("id") String id){
         return null;
     }
 
