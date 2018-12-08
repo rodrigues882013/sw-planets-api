@@ -1,7 +1,7 @@
 package com.application.swplanetsapi.domain.facade;
 
-import com.application.swplanetsapi.application.dto.internal.PlanetRequest;
-import com.application.swplanetsapi.application.dto.internal.PlanetResponse;
+import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
+import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 
 import java.util.List;
 

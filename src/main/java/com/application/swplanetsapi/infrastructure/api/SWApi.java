@@ -1,6 +1,6 @@
 package com.application.swplanetsapi.infrastructure.api;
 
-import com.application.swplanetsapi.application.dto.external.PlanetSWListResponse;
+import com.application.swplanetsapi.web.dto.external.PlanetSWListResponse;
 import com.application.swplanetsapi.infrastructure.exception.IntegrationException;
 import feign.Response;
 import feign.codec.ErrorDecoder;

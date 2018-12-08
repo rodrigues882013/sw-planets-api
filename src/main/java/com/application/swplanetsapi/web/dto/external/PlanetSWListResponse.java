@@ -1,4 +1,4 @@
-package com.application.swplanetsapi.application.dto.external;
+package com.application.swplanetsapi.web.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

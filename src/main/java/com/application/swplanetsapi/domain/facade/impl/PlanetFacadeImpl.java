@@ -1,7 +1,7 @@
 package com.application.swplanetsapi.domain.facade.impl;
 
-import com.application.swplanetsapi.application.dto.internal.PlanetRequest;
-import com.application.swplanetsapi.application.dto.internal.PlanetResponse;
+import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
+import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import com.application.swplanetsapi.domain.model.Planet;
 import com.application.swplanetsapi.domain.service.PlanetService;
@@ -25,7 +25,7 @@ public class PlanetFacadeImpl implements PlanetFacade {
     @Override
     public PlanetResponse create(PlanetRequest planet) {
         Planet p = mapper.map(planet, Planet.class);
-        return convert(p);
+        return convert(service.create(p));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PlanetFacadeImpl implements PlanetFacade {
     }
 
     private PlanetResponse convert(Planet planet){
-        PlanetResponse response = mapper.map(service.create(planet), PlanetResponse.class);
+        PlanetResponse response = mapper.map(planet, PlanetResponse.class);
         response.setAppearIn(service.getNumberMoviesWherePlanetShowedUp(planet.getName()));
         return response;
     }

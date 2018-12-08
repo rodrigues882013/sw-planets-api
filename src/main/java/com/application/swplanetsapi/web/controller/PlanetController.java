@@ -1,9 +1,10 @@
-package com.application.swplanetsapi.application.controller;
+package com.application.swplanetsapi.web.controller;
 
-import com.application.swplanetsapi.application.dto.internal.GenericResponse;
-import com.application.swplanetsapi.application.dto.internal.PlanetRequest;
-import com.application.swplanetsapi.application.dto.internal.PlanetResponse;
+import com.application.swplanetsapi.web.dto.internal.GenericResponse;
+import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
+import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("planets")
+@Slf4j
 public class PlanetController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -23,6 +25,7 @@ public class PlanetController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id){
+        log.info("Searching for planet with id: {}", id);
         return new ResponseEntity<>(facade.findById(id), HttpStatus.OK);
     }
 
@@ -30,19 +33,23 @@ public class PlanetController {
     public ResponseEntity<?> findAll(@RequestParam(value = "name", required = false) String name) {
 
         if (Objects.isNull(name)) {
+            log.info("Listing all planets.");
             return new ResponseEntity<>(facade.findAll(), HttpStatus.OK);
         } else {
+            log.info("Looking for planet with name: {}", name);
             return new ResponseEntity<>(facade.findByName(name), HttpStatus.OK);
         }
     }
 
     @PostMapping
     public ResponseEntity<PlanetResponse> create(@RequestBody PlanetRequest planetRequest){
+        log.info("Creating planet {}", planetRequest);
         return new ResponseEntity<>(facade.create(planetRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
+        log.info("Deleting planet id: {}", id);
         facade.delete(id);
         GenericResponse response =
                 new GenericResponse(HttpStatus.OK, "Resource deleted with successful");

@@ -1,4 +1,4 @@
-package com.application.swplanetsapi.application.dto.internal;
+package com.application.swplanetsapi.web.dto.internal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
