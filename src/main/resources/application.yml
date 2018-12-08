@@ -1,0 +1,20 @@
+
+server:
+  port: 8080
+  servlet:
+    contextPath: /sw-planets-api
+
+feign:
+  httpclient:
+    max-connections: 1
+    connection-timeout: 2000
+
+spring:
+  application:
+    name: sw-planets-api
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+  starwars:
+    url: swapi.co/api
