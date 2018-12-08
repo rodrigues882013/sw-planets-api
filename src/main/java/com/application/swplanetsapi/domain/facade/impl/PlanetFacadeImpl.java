@@ -5,13 +5,11 @@ import com.application.swplanetsapi.application.dto.internal.PlanetResponse;
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import com.application.swplanetsapi.domain.model.Planet;
 import com.application.swplanetsapi.domain.service.PlanetService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +29,9 @@ public class PlanetFacadeImpl implements PlanetFacade {
     }
 
     @Override
-    public boolean delete(String id) {
-        return false;
+    @Transactional
+    public void delete(String id) {
+        service.delete(id);
     }
 
     @Override
@@ -47,6 +46,11 @@ public class PlanetFacadeImpl implements PlanetFacade {
     @Override
     public PlanetResponse findById(String id) {
         return convert(service.findById(id));
+    }
+
+    @Override
+    public PlanetResponse findByName(String name) {
+        return convert(service.findByName(name));
     }
 
     private PlanetResponse convert(Planet planet){

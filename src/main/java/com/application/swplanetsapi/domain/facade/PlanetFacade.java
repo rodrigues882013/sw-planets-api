@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface PlanetFacade {
     PlanetResponse create(PlanetRequest planet);
-    boolean delete(String id);
+    void delete(String id);
     List<PlanetResponse> findAll();
     PlanetResponse findById(String id);
+    PlanetResponse findByName(String name);
 }

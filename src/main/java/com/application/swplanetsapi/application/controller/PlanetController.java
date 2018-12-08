@@ -1,5 +1,6 @@
 package com.application.swplanetsapi.application.controller;
 
+import com.application.swplanetsapi.application.dto.internal.GenericResponse;
 import com.application.swplanetsapi.application.dto.internal.PlanetRequest;
 import com.application.swplanetsapi.application.dto.internal.PlanetResponse;
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("planets")
@@ -24,8 +27,13 @@ public class PlanetController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(){
-        return new ResponseEntity<>(facade.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> findAll(@RequestParam(value = "name", required = false) String name) {
+
+        if (Objects.isNull(name)) {
+            return new ResponseEntity<>(facade.findAll(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(facade.findByName(name), HttpStatus.OK);
+        }
     }
 
     @PostMapping
@@ -33,15 +41,13 @@ public class PlanetController {
         return new ResponseEntity<>(facade.create(planetRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<PlanetResponse> update(@PathVariable("id") String id,
-                                                 @RequestBody PlanetRequest planetRequest){
-        return null;
-    }
-
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
-        return null;
+        facade.delete(id);
+        GenericResponse response =
+                new GenericResponse(HttpStatus.OK, "Resource deleted with successful");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 

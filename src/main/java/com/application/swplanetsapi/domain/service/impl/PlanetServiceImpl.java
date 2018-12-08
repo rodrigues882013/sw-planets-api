@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PlanetServiceImpl implements PlanetService {
@@ -34,12 +35,13 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public boolean delete(String id) {
+    public void delete(String id) {
         try {
             repository.deleteById(id);
-            return true;
-
         } catch (Exception ex) {
+            repository.findById(id).orElseThrow(
+                    () -> new ServiceException("Resource wasn't not found", HttpStatus.NOT_FOUND));
+
             throw new ServiceException("Resource wasn't deleted", HttpStatus.NO_CONTENT);
         }
     }
@@ -62,6 +64,12 @@ public class PlanetServiceImpl implements PlanetService {
             condition = "#planetName != null and #planetName != ''")
     public Integer getNumberMoviesWherePlanetShowedUp(String planetName){
         return countAppears(client.findAll(planetName).getResults());
+    }
+
+    @Override
+    public Planet findByName(String name) {
+        return repository.findByName(name)
+                .orElseThrow(() -> new ServiceException("Resource not Found", HttpStatus.NOT_FOUND));
     }
 
 

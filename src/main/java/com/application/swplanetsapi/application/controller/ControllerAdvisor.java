@@ -1,6 +1,7 @@
 package com.application.swplanetsapi.application.controller;
 
 import com.application.swplanetsapi.application.dto.internal.ErrorResponse;
+import com.application.swplanetsapi.infrastructure.exception.IntegrationException;
 import com.application.swplanetsapi.infrastructure.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,20 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(response, serviceException.getCode());
     }
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<?> handleException(Exception serviceException, HttpServletRequest request) {
+    @ExceptionHandler(value = IntegrationException.class)
+    public ResponseEntity<?> handleIntegrationException(IntegrationException integrationException, HttpServletRequest request) {
 
-        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, serviceException.getLocalizedMessage());
+        ErrorResponse response = new ErrorResponse(integrationException.getCode(),
+                integrationException.getLocalizedMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<?> handleException(Exception exception, HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST,
+                exception.getLocalizedMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

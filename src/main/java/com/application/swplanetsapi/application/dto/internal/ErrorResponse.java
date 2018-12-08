@@ -1,9 +1,13 @@
 package com.application.swplanetsapi.application.dto.internal;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class ErrorResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -11,9 +15,6 @@ public class ErrorResponse implements Serializable {
     private HttpStatus httpStatus;
     private String message;
     private Integer httpCode;
-
-    public ErrorResponse() {
-    }
 
     public ErrorResponse(HttpStatus code, String message) {
         this.message = message;
