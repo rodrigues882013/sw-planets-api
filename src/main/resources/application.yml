@@ -16,5 +16,7 @@ spring:
     mongodb:
       host: localhost
       port: 27017
+
+application:
   starwars:
-    url: swapi.co/api
+    url: http://swapi.co/api
