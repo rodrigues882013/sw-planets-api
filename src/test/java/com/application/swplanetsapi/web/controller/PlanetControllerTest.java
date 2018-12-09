@@ -66,7 +66,7 @@ public class PlanetControllerTest {
     public void testActionFindAll() {
 
         doReturn(mock(List.class)).when(facade).findAll();
-        ResponseEntity response = controller.findAll(null);
+        ResponseEntity response = controller.find(null);
 
         verify(facade).findAll();
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -76,7 +76,7 @@ public class PlanetControllerTest {
     public void testActionFindByName() {
 
         doReturn(mock(PlanetResponse.class)).when(facade).findByName(TATOOINE);
-        ResponseEntity response = controller.findAll(TATOOINE);
+        ResponseEntity response = controller.find(TATOOINE);
 
         verify(facade).findByName(TATOOINE);
         assertEquals(HttpStatus.OK, response.getStatusCode());
