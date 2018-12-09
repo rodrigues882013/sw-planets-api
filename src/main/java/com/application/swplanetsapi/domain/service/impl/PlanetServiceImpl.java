@@ -106,6 +106,7 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     private void flushCache(String key){
+        log.info("Flushing cache to {}", key);
         redisTemplate.delete("planet-name::" + key);
     }
 }

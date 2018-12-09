@@ -105,7 +105,7 @@ public class PlanetFacadeImpl implements PlanetFacade {
         validateFields(planetRequest);
         Planet p = mapper.map(planetRequest, Planet.class);
 
-        if (Objects.isNull(id) || Strings.isEmpty(id))
+        if (!Objects.isNull(id) || !Strings.isEmpty(id))
             p.setId(id);
 
         return service.save(p);

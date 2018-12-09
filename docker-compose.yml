@@ -15,16 +15,17 @@ services:
       - mongo
       - redis
 
+
   mongo:
     image: mongo:3.2.11
     volumes:
-    - /data/db/mongo
+      - /data/db/mongo
     ports:
-    - "27017:27017"
+      - "27017:27017"
 
   redis:
-    image: redis
+    image: redis:alpine
     volumes:
-    - /data/db/redis
+      - /data/db/redis
     ports:
-    - "6379:6379"
+      - "6379:6379"
