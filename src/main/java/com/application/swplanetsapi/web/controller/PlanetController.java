@@ -1,14 +1,11 @@
 package com.application.swplanetsapi.web.controller;
 
-import com.application.swplanetsapi.web.dto.internal.GenericResponse;
+import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
 import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
-import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +19,19 @@ import java.util.Objects;
 @RestController
 @RequestMapping("planets")
 public class PlanetController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public PlanetFacade facade;
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id){
         log.info("Searching for planet with id: {}", id);
         return new ResponseEntity<>(facade.findById(id), HttpStatus.OK);
     }
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(value = "name", required = false) String name) {
@@ -45,17 +45,29 @@ public class PlanetController {
         }
     }
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     @PostMapping
     public ResponseEntity<PlanetResponse> create(@RequestBody PlanetRequest planetRequest){
         log.info("Creating planet {}", planetRequest);
         return new ResponseEntity<>(facade.create(planetRequest), HttpStatus.CREATED);
     }
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
         log.info("Deleting planet id: {}", id);
         return new ResponseEntity<>(facade.delete(id), HttpStatus.OK);
+    }
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") String id,
+                                    @RequestBody PlanetRequest planetRequest){
+        log.info("Updating planet of id: {}", id);
+        return new ResponseEntity<>(facade.update(id, planetRequest), HttpStatus.OK);
     }
 
 

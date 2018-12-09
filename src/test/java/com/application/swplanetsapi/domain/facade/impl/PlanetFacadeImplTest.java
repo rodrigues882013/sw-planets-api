@@ -27,11 +27,16 @@ public class PlanetFacadeImplTest {
 
     private static final String UNKNOWN = "Unknown";
     private static final String TATOOINE = "Tatooine";
+    private static final String NEW_TATOOINE = "New Tatooine";
     private static final String JAKKU = "Jakku";
     private static final String NABOO = "Naboo";
     private static final String HOTH = "Hoth";
-    private static final String CLIMATE_ARID = "temperate";
+    
+    private static final String CLIMATE_TEMPERATE = "temperate";
     private static final String TERRAIN_MOUNTAIN = "grasslands, mountains";
+    private static final String TERRAIN_DESERT = "dessert";
+
+
     private static final String TATOOINE_ID = "2a7b4170aef73e5a67ea88a9";
     private static final String UNKNOWN_ID = "9ff26b7b5e024125aab4560b";
     private static final String JAKKU_ID = "f5ace2e5c315464390d644a4";
@@ -49,6 +54,7 @@ public class PlanetFacadeImplTest {
     private Planet naboo;
     private Planet hoth;
     private Planet hothConverted;
+
 
 
     private PlanetRequest emptyReq;
@@ -73,27 +79,27 @@ public class PlanetFacadeImplTest {
         tatooine = Planet.builder()
                 .name(TATOOINE)
                 .id(TATOOINE_ID)
-                .climate(CLIMATE_ARID)
+                .climate(CLIMATE_TEMPERATE)
                 .appearIn(TATOOINE_APPEARS)
                 .terrain(TERRAIN_MOUNTAIN).build();
 
         jakku = Planet.builder()
                 .name(JAKKU)
                 .id(JAKKU_ID)
-                .climate(CLIMATE_ARID)
+                .climate(CLIMATE_TEMPERATE)
                 .appearIn(JAKKU_APPEARS)
                 .terrain(TERRAIN_MOUNTAIN).build();
 
         hoth = Planet.builder()
                 .name(HOTH)
                 .id(HOTH_ID)
-                .climate(CLIMATE_ARID)
+                .climate(CLIMATE_TEMPERATE)
                 .appearIn(HOTH_APPEARS)
                 .terrain(TERRAIN_MOUNTAIN).build();
 
         hothReq = PlanetRequest.builder()
                 .name(HOTH)
-                .climate(CLIMATE_ARID)
+                .climate(CLIMATE_TEMPERATE)
                 .terrain(TERRAIN_MOUNTAIN).build();
 
         emptyReq = PlanetRequest.builder()
@@ -103,13 +109,13 @@ public class PlanetFacadeImplTest {
 
         hothConverted = Planet.builder()
                 .name(HOTH)
-                .climate(CLIMATE_ARID)
+                .climate(CLIMATE_TEMPERATE)
                 .terrain(TERRAIN_MOUNTAIN).build();
 
         naboo = Planet.builder()
                 .name(NABOO)
                 .id(NABOO)
-                .climate(CLIMATE_ARID)
+                .climate(CLIMATE_TEMPERATE)
                 .appearIn(NABOO_APPEARS)
                 .terrain(TERRAIN_MOUNTAIN).build();
 
@@ -120,8 +126,7 @@ public class PlanetFacadeImplTest {
         when(planetService.getNumberMoviesWherePlanetShowedUp(JAKKU)).thenReturn(JAKKU_APPEARS);
         when(planetService.findByName(JAKKU)).thenReturn(jakku);
         when(planetService.findByName(UNKNOWN)).thenThrow(ServiceException.class);
-        when(planetService.create(hothConverted)).thenReturn(hoth);
-        when(planetService.getNumberMoviesWherePlanetShowedUp(HOTH)).thenReturn(HOTH_APPEARS);
+        when(planetService.save(hothConverted)).thenReturn(hoth);
         when(planetService.delete(NABOO_ID)).thenReturn(Boolean.TRUE);
         when(planetService.delete(UNKNOWN_ID)).thenThrow(ServiceException.class);
         when(planetService.findAll()).thenReturn(Arrays.asList(jakku, naboo, tatooine));
@@ -168,6 +173,7 @@ public class PlanetFacadeImplTest {
     @Test
     public void testIfGivenPlanetThenCreateIt(){
         PlanetResponse testable = planetFacade.create(hothReq);
+
         assertEquals(hoth.getId(), testable.getId());
         assertEquals(hoth.getName(), testable.getName());
         assertEquals(hoth.getTerrain(), testable.getTerrain());
@@ -189,6 +195,5 @@ public class PlanetFacadeImplTest {
     public void testIfGivenAPlanetRequestThenIsInvalid(){
         planetFacade.create(emptyReq);
     }
-
 
 }

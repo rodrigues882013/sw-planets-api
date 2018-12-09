@@ -5,6 +5,8 @@ server:
     contextPath: /sw-planets-api
 
 feign:
+  hystrix:
+    enabled: true
   httpclient:
     max-connections: 1
     connection-timeout: 2000

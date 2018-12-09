@@ -1,6 +1,5 @@
 package com.application.swplanetsapi.domain.facade;
 
-import com.application.swplanetsapi.domain.model.Planet;
 import com.application.swplanetsapi.web.dto.internal.GenericResponse;
 import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
 import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
@@ -13,4 +12,5 @@ public interface PlanetFacade {
     List<PlanetResponse> findAll();
     PlanetResponse findById(String id);
     PlanetResponse findByName(String name);
+    PlanetResponse update(String id, PlanetRequest planetRequest);
 }

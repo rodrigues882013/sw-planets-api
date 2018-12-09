@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PlanetServiceImplTest {
-    private static final String UNKNOWN = "Unknown";
     private static final String TATOOINE = "Tatooine";
     private static final String JAKKU = "Jakku";
     private static final String NABOO = "Naboo";
@@ -42,15 +42,15 @@ public class PlanetServiceImplTest {
     private Planet naboo;
     private Planet nabooSaved;
 
-
     private PlanetService planetService;
     private PlanetRepository repository;
+    private RedisTemplate<String, String> template;
     private SWApi client;
 
     @Before
     public void setUp(){
         repository = mock(PlanetRepository.class);
-        planetService = new PlanetServiceImpl(client, repository);
+        planetService = new PlanetServiceImpl(client, repository, template);
 
         tatooine = Planet.builder()
                 .name(TATOOINE)
@@ -131,7 +131,7 @@ public class PlanetServiceImplTest {
 
     @Test
     public void testIfGivenPlanetThenCreateIt(){
-        Planet testable = planetService.create(naboo);
+        Planet testable = planetService.save(naboo);
         assertEquals(nabooSaved.getId(), testable.getId());
         assertEquals(nabooSaved.getName(), testable.getName());
         assertEquals(nabooSaved.getTerrain(), testable.getTerrain());

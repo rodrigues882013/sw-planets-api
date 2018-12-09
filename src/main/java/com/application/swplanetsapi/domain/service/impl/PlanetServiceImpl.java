@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,13 @@ public class PlanetServiceImpl implements PlanetService {
     @Autowired
     public PlanetRepository repository;
 
+    @Autowired
+    public RedisTemplate<String, String> redisTemplate;
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     @Override
-    public Planet create(Planet planet) {
+    public Planet save(Planet planet) {
 
         try {
             log.info("Persisting planet");
@@ -41,26 +47,25 @@ public class PlanetServiceImpl implements PlanetService {
         }
     }
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
     @Override
     public Boolean delete(String id) {
-        try {
-            log.info("Dropping planet with id {} from database", id);
-            repository.deleteById(id);
-            return true;
-        } catch (Exception ex) {
-
-            log.error(ex.getMessage());
-            repository.findById(id).orElseThrow(
-                    () -> new ServiceException("Resource wasn't not found", HttpStatus.NOT_FOUND));
-
-            throw new ServiceException("Resource wasn't deleted", HttpStatus.NO_CONTENT);
-        }
+        log.info("Dropping planet with id {} from database", id);
+        Planet p = findById(id);
+        repository.delete(p);
+        flushCache(p.getName());
+        return true;
     }
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @Override
     public List<Planet> findAll() {
         return repository.findAll();
     }
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @Override
     public Planet findById(String id) {
@@ -68,6 +73,7 @@ public class PlanetServiceImpl implements PlanetService {
                 .orElseThrow(() -> new ServiceException("Resource not found", HttpStatus.NOT_FOUND));
     }
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @Override
     @Cacheable(cacheNames = "planet-name",
@@ -75,8 +81,10 @@ public class PlanetServiceImpl implements PlanetService {
             condition = "#planetName != null and #planetName != ''")
     public Integer getNumberMoviesWherePlanetShowedUp(String planetName){
         log.info("Call StarWars api for get information about planet {}", planetName);
-        return countAppears(client.findAll(planetName).getResults());
+        return countAppears(client.find(planetName).getResults());
     }
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @Override
     public Planet findByName(String name) {
@@ -85,6 +93,7 @@ public class PlanetServiceImpl implements PlanetService {
                 .orElseThrow(() -> new ServiceException("Resource not Found", HttpStatus.NOT_FOUND));
     }
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     private Integer countAppears(List<PlanetSWResponse> objects) {
         log.info("Counting some many times planets was showed up on movies.");
@@ -94,5 +103,9 @@ public class PlanetServiceImpl implements PlanetService {
                 .map(x -> x.getFilms().size())
                 .reduce((x, y) -> x + y)
                 .orElse(0);
+    }
+
+    private void flushCache(String key){
+        redisTemplate.delete("planet-name::" + key);
     }
 }

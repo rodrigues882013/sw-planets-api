@@ -2,6 +2,7 @@ package com.application.swplanetsapi.web.controller;
 
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import com.application.swplanetsapi.web.dto.internal.GenericResponse;
+import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
 import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +32,24 @@ public class PlanetControllerTest {
 
     private static String TATOOINE_ID = "1dasd151d11da5s";
     private static String TATOOINE= "TATOOINE";
+    private static final Integer TATOOINE_APPEARS = 7;
+    private static final String CLIMATE_TEMPERATE = "temperate";
+    private static final String TERRAIN_MOUNTAIN = "grasslands, mountains";
+
+    private PlanetRequest tatooineReq;
+
+
 
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         controller = new PlanetController(facade);
+
+        tatooineReq = PlanetRequest.builder()
+                .name(TATOOINE)
+                .climate(CLIMATE_TEMPERATE)
+                .terrain(TERRAIN_MOUNTAIN).build();
     }
 
     @Test
@@ -77,6 +90,26 @@ public class PlanetControllerTest {
 
         verify(facade).delete(TATOOINE_ID);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testActionUpdate() {
+
+        doReturn(mock(PlanetResponse.class)).when(facade).update(TATOOINE_ID, tatooineReq);
+        ResponseEntity response = controller.update(TATOOINE_ID, tatooineReq);
+
+        verify(facade).update(TATOOINE_ID, tatooineReq);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testActionCreate() {
+
+        doReturn(mock(PlanetResponse.class)).when(facade).create(tatooineReq);
+        ResponseEntity response = controller.create(tatooineReq);
+
+        verify(facade).create(tatooineReq);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
 }

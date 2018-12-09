@@ -5,7 +5,7 @@ import com.application.swplanetsapi.domain.model.Planet;
 import java.util.List;
 
 public interface PlanetService {
-    Planet create(Planet planet);
+    Planet save(Planet planet);
     Boolean delete(String id);
     List<Planet> findAll();
     Planet findById(String id);
