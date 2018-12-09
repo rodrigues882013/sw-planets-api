@@ -1,7 +1,6 @@
 package com.application.swplanetsapi.web.controller;
 
 import com.application.swplanetsapi.web.dto.internal.ErrorResponse;
-import com.application.swplanetsapi.infrastructure.exception.IntegrationException;
 import com.application.swplanetsapi.infrastructure.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,24 +27,13 @@ public class ControllerAdvisor {
 
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-//    @ExceptionHandler(value = IntegrationException.class)
-//    public ResponseEntity<?> handleIntegrationException(IntegrationException integrationException,
-//                                                        HttpServletRequest request) {
-//
-//        ErrorResponse response = new ErrorResponse(integrationException.getCode(),
-//                integrationException.getReason());
-//
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
-
-    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> handleException(Exception exception, HttpServletRequest request) {
 
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST,
                 exception.getLocalizedMessage());
 
+        log.error("Exception: {}", exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
