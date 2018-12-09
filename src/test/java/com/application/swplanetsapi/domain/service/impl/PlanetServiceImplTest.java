@@ -1,12 +1,10 @@
 package com.application.swplanetsapi.domain.service.impl;
 
-import com.application.swplanetsapi.domain.facade.PlanetFacade;
 import com.application.swplanetsapi.domain.model.Planet;
 import com.application.swplanetsapi.domain.repository.PlanetRepository;
 import com.application.swplanetsapi.domain.service.PlanetService;
 import com.application.swplanetsapi.infrastructure.api.SWApi;
 import com.application.swplanetsapi.infrastructure.exception.ServiceException;
-import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +49,6 @@ public class PlanetServiceImplTest {
 
     @Before
     public void setUp(){
-//        client = mock(SWApi.class);
         repository = mock(PlanetRepository.class);
         planetService = new PlanetServiceImpl(client, repository);
 
@@ -87,7 +84,6 @@ public class PlanetServiceImplTest {
         when(repository.findById(TATOOINE_ID)).thenReturn(Optional.of(tatooine));
         when(repository.findById(UNKNOWN_ID)).thenThrow(ServiceException.class);
         when(repository.findByName(JAKKU)).thenReturn(Optional.of(jakku));
-//        when(repository.findByName(UNKNOWN)).thenThrow(ServiceException.class);
         when(repository.save(naboo)).thenReturn(nabooSaved);
         when(repository.findAll()).thenReturn(Arrays.asList(jakku, tatooine));
 

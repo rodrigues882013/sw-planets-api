@@ -1,7 +1,6 @@
 package com.application.swplanetsapi.web.controller;
 
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
-import com.application.swplanetsapi.web.controller.PlanetController;
 import com.application.swplanetsapi.web.dto.internal.GenericResponse;
 import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 import org.junit.Before;
@@ -14,16 +13,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
