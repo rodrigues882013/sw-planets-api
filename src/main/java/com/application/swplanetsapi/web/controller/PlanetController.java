@@ -34,7 +34,7 @@ public class PlanetController {
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(value = "name", required = false) String name) {
+    public ResponseEntity<?> find(@RequestParam(value = "name", required = false) String name) {
 
         if (Objects.isNull(name)) {
             log.info("Listing all planets.");
