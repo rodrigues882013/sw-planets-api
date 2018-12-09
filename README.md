@@ -5,7 +5,7 @@ Requirements:
 Mandatory:
 
     maven
-    java 1.8 or
+    java 1.8
     
 Highly Recommended:
     
@@ -43,4 +43,4 @@ With the step below the application will run in:
 
     http://localhost:8080/sw-planets-api/swagger-ui.html
 
-And test api.
+Now you can test api.
