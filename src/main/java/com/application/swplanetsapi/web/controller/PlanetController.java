@@ -4,6 +4,8 @@ import com.application.swplanetsapi.web.dto.internal.GenericResponse;
 import com.application.swplanetsapi.web.dto.internal.PlanetRequest;
 import com.application.swplanetsapi.web.dto.internal.PlanetResponse;
 import com.application.swplanetsapi.domain.facade.PlanetFacade;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
+@Slf4j
+@NoArgsConstructor
+@AllArgsConstructor
 @RestController
 @RequestMapping("planets")
-@Slf4j
 public class PlanetController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -50,10 +54,7 @@ public class PlanetController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
         log.info("Deleting planet id: {}", id);
-        facade.delete(id);
-        GenericResponse response =
-                new GenericResponse(HttpStatus.OK, "Resource deleted with successful");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(facade.delete(id), HttpStatus.OK);
 
     }
 

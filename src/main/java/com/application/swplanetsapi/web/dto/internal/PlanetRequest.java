@@ -1,18 +1,13 @@
 package com.application.swplanetsapi.web.dto.internal;
 
+import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
 public class PlanetRequest {
-
-    @NotNull
     private String name;
-
-    @NotNull
     private String climate;
-
-    @NotNull
     private String terrain;
 }

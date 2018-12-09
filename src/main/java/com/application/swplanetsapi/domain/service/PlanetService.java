@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PlanetService {
     Planet create(Planet planet);
-    void delete(String id);
+    Boolean delete(String id);
     List<Planet> findAll();
     Planet findById(String id);
     Integer getNumberMoviesWherePlanetShowedUp(String planetName);

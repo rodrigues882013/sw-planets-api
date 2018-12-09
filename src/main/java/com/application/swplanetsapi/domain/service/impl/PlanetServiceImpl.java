@@ -6,6 +6,8 @@ import com.application.swplanetsapi.domain.repository.PlanetRepository;
 import com.application.swplanetsapi.domain.service.PlanetService;
 import com.application.swplanetsapi.infrastructure.api.SWApi;
 import com.application.swplanetsapi.infrastructure.exception.ServiceException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Slf4j
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlanetServiceImpl implements PlanetService {
 
     @Autowired
@@ -38,10 +42,11 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public void delete(String id) {
+    public Boolean delete(String id) {
         try {
             log.info("Dropping planet with id {} from database", id);
             repository.deleteById(id);
+            return true;
         } catch (Exception ex) {
 
             log.error(ex.getMessage());
